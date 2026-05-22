@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#FF6B35"/>
+
+  <!-- Pig face -->
+  <circle cx="256" cy="260" r="140" fill="#FFB5A0"/>
+
+  <!-- Left ear -->
+  <ellipse cx="155" cy="145" rx="45" ry="55" fill="#FF8C6B" transform="rotate(-15 155 145)"/>
+  <ellipse cx="155" cy="145" rx="25" ry="35" fill="#FFB5A0" transform="rotate(-15 155 145)"/>
+
+  <!-- Right ear -->
+  <ellipse cx="357" cy="145" rx="45" ry="55" fill="#FF8C6B" transform="rotate(15 357 145)"/>
+  <ellipse cx="357" cy="145" rx="25" ry="35" fill="#FFB5A0" transform="rotate(15 357 145)"/>
+
+  <!-- Snout -->
+  <ellipse cx="256" cy="290" rx="65" ry="50" fill="#FF8C6B"/>
+
+  <!-- Left nostril -->
+  <ellipse cx="235" cy="290" rx="14" ry="10" fill="#E05A3A"/>
+
+  <!-- Right nostril -->
+  <ellipse cx="277" cy="290" rx="14" ry="10" fill="#E05A3A"/>
+
+  <!-- Left eye -->
+  <circle cx="210" cy="230" r="22" fill="white"/>
+  <circle cx="215" cy="228" r="12" fill="#1A1A1A"/>
+  <circle cx="218" cy="224" r="4" fill="white"/>
+
+  <!-- Right eye -->
+  <circle cx="302" cy="230" r="22" fill="white"/>
+  <circle cx="307" cy="228" r="12" fill="#1A1A1A"/>
+  <circle cx="310" cy="224" r="4" fill="white"/>
+
+  <!-- Smile -->
+  <path d="M220 320 Q256 350 292 320" stroke="#E05A3A" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+  <!-- Blush left -->
+  <ellipse cx="175" cy="275" rx="20" ry="12" fill="#FF6B8A" opacity="0.4"/>
+
+  <!-- Blush right -->
+  <ellipse cx="337" cy="275" rx="20" ry="12" fill="#FF6B8A" opacity="0.4"/>
+</svg>
