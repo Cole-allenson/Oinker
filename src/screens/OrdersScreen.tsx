@@ -571,6 +571,23 @@ export default function OrdersScreen() {
             <Text style={styles.messageButtonText}>💬 Message Driver</Text>
           </TouchableOpacity>
         )}
+        {role === 'eater' && item.status === 'pending' && (
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => {
+              Alert.alert('Cancel Order', 'Are you sure you want to cancel this order?', [
+                { text: 'Keep Order', style: 'cancel' },
+                {
+                  text: 'Cancel Order',
+                  style: 'destructive',
+                  onPress: () => handleAction(item.id, 'cancelled'),
+                },
+              ]);
+            }}
+          >
+            <Text style={styles.cancelButtonText}>Cancel Order</Text>
+          </TouchableOpacity>
+        )}
         {getAction(item)}
       </View>
     );
@@ -668,7 +685,7 @@ export default function OrdersScreen() {
     eaterSections.push({ title: `Active (${activeOrders.length})`, data: activeOrders });
   }
   if (pendingOrdersEater.length > 0) {
-    eaterSections.push({ title: `Offers (${pendingOrdersEater.length})`, data: pendingOrdersEater });
+    eaterSections.push({ title: `Pending (${pendingOrdersEater.length})`, data: pendingOrdersEater });
   }
   if (deliveredOrders.length > 0) {
     eaterSections.push({ title: `Delivered (${deliveredOrders.length})`, data: deliveredOrders });
@@ -932,6 +949,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.primary,
     marginBottom: theme.spacing.sm,
+  },
+  cancelButton: {
+    backgroundColor: theme.colors.error + '15',
+    borderRadius: theme.borderRadius.sm,
+    paddingVertical: theme.spacing.sm,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.error,
+    marginBottom: theme.spacing.sm,
+  },
+  cancelButtonText: {
+    color: theme.colors.error,
+    fontSize: 14,
+    fontWeight: '600',
   },
   footerActions: {
     flexDirection: 'row',

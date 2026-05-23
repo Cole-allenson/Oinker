@@ -42,7 +42,6 @@ function haversineDistance(
 
 export default function DeliveryConfirmationScreen({ route, navigation }: Props) {
   const { order } = route.params;
-  console.log('[Delivery] Order:', JSON.stringify(order, null, 2));
 
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [locationValid, setLocationValid] = useState<boolean | null>(null);
@@ -77,14 +76,10 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
   };
 
   const handleTakePhoto = async () => {
-    console.log('[Photo] Starting take photo flow');
     setChecking(true);
 
     try {
-      // Request camera permission first
-      console.log('[Photo] Requesting camera permission');
       const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
-      console.log('[Photo] Camera permission:', cameraPermission.granted);
 
       if (!cameraPermission.granted) {
         Alert.alert('Permission denied', 'Camera permission is required to take a photo.');
@@ -92,10 +87,7 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
         return;
       }
 
-      // Check location
-      console.log('[Photo] Checking location');
       const isNearby = await checkLocation();
-      console.log('[Photo] Is nearby:', isNearby);
 
       if (!isNearby && !overrideActive) {
         const newAttempts = attempts + 1;
@@ -128,8 +120,6 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
       setLocationValid(true);
       setChecking(false);
 
-      // Launch camera
-      console.log('[Photo] Launching camera');
       const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
@@ -137,21 +127,17 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
         exif: false,
         base64: false,
       });
-      console.log('[Photo] Camera result:', result.canceled);
 
       if (!result.canceled && result.assets[0]) {
-        console.log('[Photo] Photo URI:', result.assets[0].uri);
         setPhotoUri(result.assets[0].uri);
       }
     } catch (err: any) {
-      console.error('[Photo] Error:', err);
       Alert.alert('Error', `Photo failed: ${err.message || 'Unknown error'}`);
       setChecking(false);
     }
   };
 
   const handleChooseFromGallery = async () => {
-    console.log('[Photo] Opening gallery');
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -160,15 +146,12 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
         exif: false,
         base64: false,
       });
-      console.log('[Photo] Gallery result:', result.canceled);
 
       if (!result.canceled && result.assets[0]) {
-        console.log('[Photo] Photo URI:', result.assets[0].uri);
         setPhotoUri(result.assets[0].uri);
-        setLocationValid(true); // Skip location check for gallery picks
+        setLocationValid(true);
       }
     } catch (err: any) {
-      console.error('[Photo] Gallery error:', err);
       Alert.alert('Error', err.message || 'Failed to pick photo.');
     }
   };
@@ -176,19 +159,13 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
   const handleConfirm = async () => {
     if (!photoUri) return;
 
-    console.log('[Upload] Starting upload for:', photoUri);
     setSubmitting(true);
     try {
       const fileName = `delivery-${order.id}-${Date.now()}.jpg`;
-      console.log('[Upload] File name:', fileName);
-
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
-      console.log('[Upload] Got token:', !!token);
 
       const uploadUrl = `https://ucovpdohyahwbhujsyyi.supabase.co/storage/v1/object/delivery__photos/${fileName}`;
-      console.log('[Upload] Uploading to:', uploadUrl);
-
       const result = await FileSystem.uploadAsync(uploadUrl, photoUri, {
         httpMethod: 'POST',
         headers: {
@@ -198,23 +175,19 @@ export default function DeliveryConfirmationScreen({ route, navigation }: Props)
         uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
       });
 
-      console.log('[Upload] Result status:', result.status);
       if (result.status < 200 || result.status >= 300) {
         throw new Error(`Upload failed with status ${result.status}`);
       }
 
-      console.log('[Upload] Updating order');
       await api.updateOrder(order.id, {
         status: 'delivered',
         photo_url: fileName,
       });
 
-      console.log('[Upload] Done!');
       Alert.alert('Delivered!', 'Photo proof saved. Order marked as delivered.', [
         { text: 'OK', onPress: () => navigation.goBack() },
       ]);
     } catch (err: any) {
-      console.error('[Upload] Error:', err);
       Alert.alert('Error', err.message || 'Failed to upload photo.');
     } finally {
       setSubmitting(false);

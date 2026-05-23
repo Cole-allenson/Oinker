@@ -3,17 +3,12 @@ import { supabase } from './supabase';
 const API_BASE = process.env.EXPO_PUBLIC_API_BASE ?? 'http://192.168.68.60:8000';
 
 async function apiFetch(path: string, options: RequestInit = {}, retries = 2): Promise<any> {
-  console.log(`[API] Fetching: ${API_BASE}${path}`);
-
   let token: string | undefined;
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
     token = session?.access_token;
-    console.log('[API] Got token:', token ? 'yes' : 'no');
-  } catch (err) {
-    console.log('[API] Could not get session:', err);
-  }
+  } catch {}
 
   try {
     const res = await fetch(`${API_BASE}${path}`, {
@@ -25,25 +20,18 @@ async function apiFetch(path: string, options: RequestInit = {}, retries = 2): P
       },
     });
 
-    console.log(`[API] Response status: ${res.status}`);
-
     if (!res.ok) {
       const error = await res.json().catch(() => ({ detail: 'Request failed' }));
-      console.log('[API] Error response:', error);
       throw new Error(error.detail || 'Request failed');
     }
 
-    const data = await res.json();
-    console.log('[API] Success:', data);
-    return data;
+    return res.json();
   } catch (err) {
     // Retry on network errors (TypeError), not on API errors
     if (retries > 0 && err instanceof TypeError) {
-      console.log(`[API] Network error, retrying... (${retries} left)`);
       await new Promise(r => setTimeout(r, 800));
       return apiFetch(path, options, retries - 1);
     }
-    console.log('[API] Fetch error:', err);
     throw err;
   }
 }

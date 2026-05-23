@@ -47,8 +47,8 @@ export default function MapScreen() {
   const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
   const [userName, setUserName] = useState('');
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [minPayout, setMinPayout] = useState('3.00');
-  const [ratePerMile, setRatePerMile] = useState('3.00');
+  const [minPayout, setMinPayout] = useState('2.00');
+  const [ratePerMile, setRatePerMile] = useState('2.00');
   const [savingSettings, setSavingSettings] = useState(false);
 
   const fetchDrivers = useCallback(async (lat: number, lng: number) => {
@@ -298,7 +298,7 @@ export default function MapScreen() {
                 value={ratePerMile}
                 onChangeText={setRatePerMile}
                 keyboardType="decimal-pad"
-                placeholder="3.00"
+                placeholder="2.00"
                 placeholderTextColor={theme.colors.textMuted}
               />
 
@@ -308,7 +308,7 @@ export default function MapScreen() {
                 value={minPayout}
                 onChangeText={setMinPayout}
                 keyboardType="decimal-pad"
-                placeholder="3.00"
+                placeholder="2.00"
                 placeholderTextColor={theme.colors.textMuted}
               />
 

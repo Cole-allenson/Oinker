@@ -69,8 +69,7 @@ export default function RequestDeliveryScreen({ route, navigation }: Props) {
   const PLATFORM_FEE_PERCENT = 0.15;
   const PLATFORM_FEE_MINIMUM = 2;
   const PROCESSING_FEE_RATE = 0.029;
-  const PROCESSING_FEE_FLAT = 0.30;
-  const MINIMUM_FEE = 3;
+  const MINIMUM_FEE = 2;
 
   // Auto-fill dropoff with current location and fetch nearby restaurants
   useEffect(() => {
@@ -168,11 +167,11 @@ export default function RequestDeliveryScreen({ route, navigation }: Props) {
 
   const platformFee = estimatedPrice ? Math.max(Math.round(estimatedPrice * PLATFORM_FEE_PERCENT * 100) / 100, PLATFORM_FEE_MINIMUM) : 0;
 
-  // Card: processing fee on full subtotal. Cash: processing fee on platform fee only (charged to card).
+  // Card: processing fee on delivery fee. Cash: processing fee on platform fee only (charged to card).
   const processingFee = estimatedPrice
     ? paymentMethod === 'card'
-      ? Math.round(((estimatedPrice + platformFee) * PROCESSING_FEE_RATE + PROCESSING_FEE_FLAT) * 100) / 100
-      : Math.round((platformFee * PROCESSING_FEE_RATE + PROCESSING_FEE_FLAT) * 100) / 100
+      ? Math.round(estimatedPrice * PROCESSING_FEE_RATE * 100) / 100
+      : Math.round(platformFee * PROCESSING_FEE_RATE * 100) / 100
     : 0;
 
   const total = estimatedPrice ? estimatedPrice + platformFee + processingFee : 0;
