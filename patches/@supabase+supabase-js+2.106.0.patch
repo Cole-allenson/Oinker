@@ -1,0 +1,17 @@
+diff --git a/node_modules/@supabase/supabase-js/dist/index.cjs b/node_modules/@supabase/supabase-js/dist/index.cjs
+index eaaca64..10621f8 100644
+--- a/node_modules/@supabase/supabase-js/dist/index.cjs
++++ b/node_modules/@supabase/supabase-js/dist/index.cjs
+@@ -64,11 +64,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
+ let otelModulePromise = null;
+ const OTEL_PKG = "@opentelemetry/api";
+ function loadOtel() {
+-	if (otelModulePromise === null) otelModulePromise = import(
+-		/* webpackIgnore: true */
+-		/* @vite-ignore */
+-		OTEL_PKG
+-).catch(() => null);
++	if (otelModulePromise === null) otelModulePromise = Promise.resolve(null);
+ 	return otelModulePromise;
+ }
+ /**
