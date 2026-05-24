@@ -36,7 +36,7 @@
   "devDependencies": {
     "@babel/plugin-transform-dynamic-import": "^7.27.1",
     "@types/react": "~19.1.0",
-    "babel-preset-expo": "^56.0.12",
+    "babel-preset-expo": "~54.0.10",
     "patch-package": "^8.0.1",
     "typescript": "~5.9.2"
   },
