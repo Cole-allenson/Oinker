@@ -1,4 +1,4 @@
-const upstreamTransformer = require('@expo/metro-config/build/babel-transformer');
+const upstreamTransformer = require('expo/node_modules/@expo/metro-config/build/babel-transformer');
 
 module.exports.transform = function (params) {
   if (params.filename && params.filename.includes('@supabase/supabase-js')) {
